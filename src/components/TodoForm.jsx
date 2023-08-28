@@ -1,44 +1,43 @@
-import React, { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import './TodoForm.css'
+import React, { useState } from 'react';
+import './TodoForm.css';
 
-const TodoForm = (props) => {
+const TodoForm = ({ onSubmit }) => {
+  const [input, setInput] = useState('');
 
-    const [input, setInput] = useState('');
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
 
-    const controlnput = e => {
-      setInput(e.target.value);
-    };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
-    const controlSend = e => {
-      e.preventDefault();
-      
+    if (input.trim()) {
       const newTodo = {
-        id: uuidv4(),
+        id: Date.now(),
         text: input,
-        complete: false
+        complete: false,
       };
 
-      props.onSubmit(newTodo);
-    };
+      onSubmit(newTodo);
+      setInput('');
+    }
+  };
 
   return (
-    <>
-    <form className='todo-form'
-      onSubmit={controlSend}>
+    <form className='todo-form' onSubmit={handleFormSubmit}>
       <input
-      className='todo-input'
-      type='text'
-      placeholder='Add todo' 
-      name='text'
-      onChange={controlnput}  
+        className='todo-input'
+        type='text'
+        placeholder='Add todo'
+        name='text'
+        value={input}
+        onChange={handleInputChange}
       />
-    <button className='todo-button'>
-      Add Todo
-    </button>
+      <button className='todo-button' type='submit'>
+        Add Todo
+      </button>
     </form>
-    </>
-  )
-}
+  );
+};
 
-export default TodoForm
+export default TodoForm;
